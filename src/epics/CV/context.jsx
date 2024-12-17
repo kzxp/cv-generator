@@ -164,7 +164,6 @@ const HackyElementCreator = (Tag) => {
     const stringifyStyle = `${Tag}.${JSON.stringify(style)}`;
 
     if (!CachedElement.has(stringifyStyle)) {
-      console.log(styled.h5);
       StyledComponent = styled[Tag]({
         display: "flex",
         flexDirection: "column",
