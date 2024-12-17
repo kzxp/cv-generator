@@ -59,6 +59,7 @@ export const styles = {
 			flexGrow: 0,
 			flexDirection: "row",
 			alignItems: "center",
+			overflowX: "auto",
 		},
 		photo: {
 			width: "80pt",

@@ -8,7 +8,7 @@ const MarkdownImage = ({ src, baseUrl, ...props }: MarkdownImageProps) => {
   const imageUrl = useMemo(() => {
     if (!baseUrl || !src) return "";
 
-    return `https://raw.githubusercontent.com/${
+    return `https://raw.githubusercontent.com${
       new URL([baseUrl, src!.replace("./", "")].join("/")).pathname
     }`.replace("/tree/", "/refs/heads/");
   }, [src, baseUrl]);
