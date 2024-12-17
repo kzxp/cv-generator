@@ -1,6 +1,7 @@
-import { Suspense, use, useMemo } from "react";
+import { useMemo } from "react";
 import { fetchChallengeReadme } from "../../services/challenges-lol";
 import { Markdown } from "../../components/markdown";
+import { LoaderFunctionArgs } from "react-router";
 
 type StuffsContentProps = {
   url: string;
@@ -8,16 +9,14 @@ type StuffsContentProps = {
 };
 
 type StuffsContentComponentProps = {
-  promise: ReturnType<typeof fetchChallengeReadme>;
+  content: Awaited<ReturnType<typeof fetchChallengeReadme>>;
   baseUrl?: string;
 };
 
 const StuffsContentComponent = ({
-  promise,
+  content: Content,
   baseUrl,
 }: StuffsContentComponentProps) => {
-  const Context = use(promise);
-
   const components = useMemo(
     () => ({
       ...Markdown,
@@ -29,18 +28,21 @@ const StuffsContentComponent = ({
   );
 
   return (
-    Context && <Context.default components={components} baseUrl={baseUrl} />
+    Content?.default && (
+      <article className="prose max-w-none shadow-lg p-4">
+        <p className="float-right">
+          <a href={baseUrl} target="_blank" rel="noopener noreferrer">
+            Link to repo
+          </a>
+        </p>
+        <Content.default components={components} baseUrl={baseUrl} />
+      </article>
+    )
   );
 };
 
-const StuffsContent = ({ url, baseUrl }: StuffsContentProps) => {
-  const promise = useMemo(() => fetchChallengeReadme(url), [url]);
-
-  return (
-    <Suspense fallback={<p>⌛Downloading content...</p>}>
-      <StuffsContentComponent promise={promise} baseUrl={baseUrl} />
-    </Suspense>
-  );
+const loader = async ({ params }: LoaderFunctionArgs<StuffsContentProps>) => {
+  return fetchChallengeReadme(params.url!);
 };
 
-export default StuffsContent;
+export { loader, StuffsContentComponent };
