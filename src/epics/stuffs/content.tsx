@@ -1,12 +1,6 @@
 import { useMemo } from "react";
 import { fetchChallengeReadme } from "../../services/challenges-lol";
 import { Markdown } from "../../components/markdown";
-import { LoaderFunctionArgs } from "react-router";
-
-type StuffsContentProps = {
-  url: string;
-  baseUrl?: string;
-};
 
 type StuffsContentComponentProps = {
   content: Awaited<ReturnType<typeof fetchChallengeReadme>>;
@@ -29,7 +23,7 @@ const StuffsContentComponent = ({
 
   return (
     Content?.default && (
-      <article className="prose max-w-none shadow-lg p-4">
+      <article className="prose max-w-none shadow-lg p-4 max-h-[768px] overflow-y-auto">
         <p className="float-right">
           <a href={baseUrl} target="_blank" rel="noopener noreferrer">
             Link to repo
@@ -41,4 +35,4 @@ const StuffsContentComponent = ({
   );
 };
 
-export {  StuffsContentComponent };
+export { StuffsContentComponent };

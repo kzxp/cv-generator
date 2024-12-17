@@ -16,8 +16,13 @@ const MarkdownImage = ({ src, baseUrl, ...props }: MarkdownImageProps) => {
   return imageUrl ? <img {...props} src={imageUrl} /> : null;
 };
 
+const MarkdownLink = ({ href, ...props }: JSX.IntrinsicElements["a"]) => {
+  return <a {...props} href={href} target="_blank" rel="noopener noreferrer" />;
+};
+
 const Markdown = {
   img: MarkdownImage,
+  a: MarkdownLink,
 };
 
 export { Markdown };
