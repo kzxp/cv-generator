@@ -1,7 +1,9 @@
+import * as productionRuntime from "react/jsx-runtime";
+
 const importJSXRuntime = async () => {
   return import.meta.env.DEV
-    ? await import("react/jsx-dev-runtime")
-    : await import("react/jsx-runtime");
+    ? import("react/jsx-dev-runtime")
+    : productionRuntime;
 };
 
 const transformMarkdownToJSX = async (markdown: string) => {

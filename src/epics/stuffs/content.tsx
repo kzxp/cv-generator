@@ -41,8 +41,4 @@ const StuffsContentComponent = ({
   );
 };
 
-const loader = async ({ params }: LoaderFunctionArgs<StuffsContentProps>) => {
-  return fetchChallengeReadme(params.url!);
-};
-
-export { loader, StuffsContentComponent };
+export {  StuffsContentComponent };
