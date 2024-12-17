@@ -1,3 +1,4 @@
+import type { RouteRecord } from "vite-react-ssg";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./App.css";
 import { lazy } from "react";
@@ -11,12 +12,27 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<CV />} />
-        <Route path="/stuffs" element={<Stuffs />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {routes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
       </Routes>
     </BrowserRouter>
   );
 }
+
+export const routes: RouteRecord[] = [
+  {
+    path: "/",
+    element: <CV />,
+  },
+  {
+    path: "/stuffs",
+    element: <Stuffs />,
+  },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
+  },
+];
 
 export default App;
