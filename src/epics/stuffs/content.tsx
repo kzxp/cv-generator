@@ -23,16 +23,31 @@ const StuffsContentComponent = ({
 
   return (
     Content?.default && (
-      <article className="prose max-w-none shadow-lg p-4 max-h-[768px] overflow-y-auto">
-        <p className="float-right">
-          <a href={baseUrl} target="_blank" rel="noopener noreferrer">
-            Link to repo
-          </a>
-        </p>
-        <Content.default components={components} baseUrl={baseUrl} />
-      </article>
+      <StuffsContentWrapper baseUrl={baseUrl}>
+        <Content.default components={components} />
+      </StuffsContentWrapper>
     )
   );
 };
 
-export { StuffsContentComponent };
+type StuffsContentWrapperProps = React.PropsWithChildren<{
+  baseUrl?: string;
+}>;
+
+const StuffsContentWrapper = ({
+  children,
+  baseUrl,
+}: StuffsContentWrapperProps) => {
+  return (
+    <article className="prose max-w-none shadow-lg p-4">
+      <p className="float-right">
+        <a href={baseUrl} target="_blank" rel="noopener noreferrer">
+          Link to code
+        </a>
+      </p>
+      {children}
+    </article>
+  );
+};
+
+export { StuffsContentComponent, StuffsContentWrapper };

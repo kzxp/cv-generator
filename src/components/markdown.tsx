@@ -1,4 +1,5 @@
 import { useMemo, type JSX } from "react";
+import { buildGithubRawUrl } from "../helpers/github";
 
 type MarkdownImageProps = JSX.IntrinsicElements["img"] & {
   baseUrl?: string;
@@ -8,9 +9,7 @@ const MarkdownImage = ({ src, baseUrl, ...props }: MarkdownImageProps) => {
   const imageUrl = useMemo(() => {
     if (!baseUrl || !src) return "";
 
-    return `https://raw.githubusercontent.com${
-      new URL([baseUrl, src!.replace("./", "")].join("/")).pathname
-    }`.replace("/tree/", "/refs/heads/");
+    return buildGithubRawUrl(baseUrl, src);
   }, [src, baseUrl]);
 
   return imageUrl ? <img {...props} src={imageUrl} /> : null;

@@ -20,7 +20,16 @@ const routes: RouteRecord[] = [
       },
       {
         path: "stuffs",
-        lazy: () => import("./epics/stuffs"),
+        children: [
+          {
+            index: true,
+            lazy: () => import("./epics/stuffs"),
+          },
+          {
+            path: ":id",
+            lazy: () => import("./epics/stuffs/[stuff]"),
+          },
+        ],
       },
     ],
   },

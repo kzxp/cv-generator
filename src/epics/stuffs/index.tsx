@@ -1,18 +1,27 @@
-import {
-  fetchChallengeReadme,
-  fetchChallenges,
-} from "../../services/challenges-lol";
-import { StuffsContentComponent } from "./content";
+import { Link } from "vite-react-ssg";
+import { fetchChallengeContents } from "../../services/challenges-lol";
+import { StuffsContentWrapper } from "./content";
 import { useLoaderData } from "react-router";
 
 const Stuffs = () => {
-  const challengeContentsHtml = useLoaderData<typeof loader>();
+  const challengeContents = useLoaderData<typeof loader>();
 
   return (
-    <div
-      className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-      dangerouslySetInnerHTML={{ __html: challengeContentsHtml }}
-    />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {challengeContents.map((challengeContent, index) => (
+        <StuffsContentWrapper
+          key={index}
+          baseUrl={challengeContent.directoryUrl}
+        >
+          <h1>
+            <Link to={`/stuffs/${challengeContent.name}`}>
+              {challengeContent.content.metadata.title}
+            </Link>
+          </h1>
+          <p>{challengeContent.content.metadata.description}</p>
+        </StuffsContentWrapper>
+      ))}
+    </div>
   );
 };
 
@@ -21,25 +30,7 @@ export default Stuffs;
 export const Component = Stuffs;
 
 export async function loader() {
-  const challenges = await fetchChallenges();
-  const challengeContents = await Promise.all(
-    challenges.map(async (challenge) => {
-      const content = await fetchChallengeReadme(challenge.readmeUrl);
-      return {
-        ...challenge,
-        content,
-      };
-    })
-  );
+  const challengeContents = await fetchChallengeContents();
 
-  const { renderToString } = await import("react-dom/server");
-  return renderToString(
-    challengeContents.map((challengeContent, index) => (
-      <StuffsContentComponent
-        key={index}
-        content={challengeContent.content}
-        baseUrl={challengeContent.directoryUrl}
-      />
-    ))
-  );
+  return challengeContents
 }

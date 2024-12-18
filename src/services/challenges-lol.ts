@@ -20,4 +20,18 @@ const fetchChallengeReadme = async (url: string) => {
   return jsx;
 };
 
-export { fetchChallenges, fetchChallengeReadme };
+const fetchChallengeContents = async () => {
+  const challenges = await fetchChallenges();
+  const challengeContents = await Promise.all(
+    challenges.map(async (challenge) => {
+      const content = await fetchChallengeReadme(challenge.readmeUrl);
+      return {
+        ...challenge,
+        content,
+      };
+    })
+  );
+  return challengeContents;
+};
+
+export { fetchChallenges, fetchChallengeReadme, fetchChallengeContents };
