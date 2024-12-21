@@ -23,9 +23,11 @@ const StuffsContentComponent = ({
 
   return (
     Content?.default && (
-      <StuffsContentWrapper baseUrl={baseUrl}>
-        <Content.default components={components} />
-      </StuffsContentWrapper>
+      <div className="shadow-lg p-4">
+        <StuffsContentWrapper baseUrl={baseUrl}>
+          <Content.default components={components} />
+        </StuffsContentWrapper>
+      </div>
     )
   );
 };
@@ -39,10 +41,15 @@ const StuffsContentWrapper = ({
   baseUrl,
 }: StuffsContentWrapperProps) => {
   return (
-    <article className="prose max-w-none shadow-lg p-4">
+    <article className="prose max-w-none p-2">
       <p className="float-right">
-        <a href={baseUrl} target="_blank" rel="noopener noreferrer">
-          Link to code
+        <a
+          href={baseUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="no-underline hover:underline"
+        >
+          Source
         </a>
       </p>
       {children}

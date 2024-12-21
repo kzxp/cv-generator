@@ -19,9 +19,58 @@ const MarkdownLink = ({ href, ...props }: JSX.IntrinsicElements["a"]) => {
   return <a {...props} href={href} target="_blank" rel="noopener noreferrer" />;
 };
 
+const isUrl = (text: string) => {
+  try {
+    new URL(text);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+const MarkdownText = ({ children }: React.PropsWithChildren) => {
+  if (typeof children !== "string") return <>{children}</>;
+
+  const words = children.split(" ");
+  return (
+    <span>
+      {words.map((word, i) =>
+        isUrl(word) ? (
+          <MarkdownLink key={i} href={word}>
+            {word}
+          </MarkdownLink>
+        ) : (
+          <span key={i}>
+            {word}
+            {i < words.length - 1 ? " " : ""}
+          </span>
+        )
+      )}
+    </span>
+  );
+};
+
+const MarkdownList = ({ children }: React.PropsWithChildren) => {
+  return (
+    <li>
+      <MarkdownText>{children}</MarkdownText>
+    </li>
+  );
+};
+
+const MarkdownParagraph = ({ children }: React.PropsWithChildren) => {
+  return (
+    <p>
+      <MarkdownText>{children}</MarkdownText>
+    </p>
+  );
+};
+
 const Markdown = {
   img: MarkdownImage,
   a: MarkdownLink,
+  li: MarkdownList,
+  p: MarkdownParagraph,
 };
 
 export { Markdown };

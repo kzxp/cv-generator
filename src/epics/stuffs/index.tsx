@@ -7,19 +7,22 @@ const Stuffs = () => {
   const challengeContents = useLoaderData<typeof loader>();
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="flex flex-col py-4">
       {challengeContents.map((challengeContent, index) => (
-        <StuffsContentWrapper
-          key={index}
-          baseUrl={challengeContent.directoryUrl}
+        <div className="">
+          <StuffsContentWrapper
+            key={index}
+            baseUrl={challengeContent.directoryUrl}
         >
-          <h1>
-            <Link to={`/stuffs/${challengeContent.name}`}>
+          <h1 className="text-3xl font-bold">
+            <Link to={`/stuffs/${challengeContent.name}`} className="no-underline hover:underline">
               {challengeContent.content.metadata.title}
             </Link>
           </h1>
           <p>{challengeContent.content.metadata.description}</p>
+        {index < challengeContents.length - 1 && <hr className="mt-4 border-[#273c75] border-t-4" />}
         </StuffsContentWrapper>
+        </div>
       ))}
     </div>
   );
